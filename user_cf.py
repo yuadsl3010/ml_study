@@ -1,7 +1,6 @@
 import common
 import math
 import operator
-from collections import defaultdict
 import tensorflow as tf
 
 def build_similarity_matrix(data_list):
@@ -71,11 +70,12 @@ def recommand(W, item_users, u):
     print('recommand done, size: ' + str(len(rank)))
     return rank
 
+def main():
+    data_list = common.get_data()
+    w_matrix, iu_matrix = build_similarity_matrix(data_list)
+    rank_test = recommand(w_matrix, iu_matrix, 2213)
+    for i, r in sorted(rank_test.items(), key=operator.itemgetter(1), reverse=True)[:10]:
+        print('recommand item: ' + str(i) + ', rank: ' + str(r))
 
-data_list = common.get_data()
-print('get_data done 2, size: ' + str(len(data_list)))
-w_matrix, iu_matrix = build_similarity_matrix(data_list)
-rank_test = recommand(w_matrix, iu_matrix, 2213)
-for i, r in sorted(rank_test.items(), key=operator.itemgetter(1), reverse=True)[:10]:
-    print('recommand item: ' + str(i) + ', rank: ' + str(r))
-
+if __name__ == "__main__":
+    main()
